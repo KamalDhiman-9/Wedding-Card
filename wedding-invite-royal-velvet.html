@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harsha & Mukul — Wedding Invitation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Great+Vibes&display=swap');
+
+  :root{
+    --velvet-dark:#3D0A17;
+    --velvet:#6E0F24;
+    --velvet-deep:#4A0C1A;
+    --gold:#D6A24C;
+    --gold-light:#F0D9A8;
+    --cream:#FBF3E7;
+    --ink:#2B0A12;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Cormorant Garamond', serif;
+    background:var(--cream);
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+  .script{font-family:'Great Vibes', cursive;}
+
+  /* ---------- CURTAIN INTRO ---------- */
+  #curtain-screen{
+    position:fixed; inset:0; z-index:100;
+    background:radial-gradient(ellipse at center, #5A0F22 0%, #2B0710 100%);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .curtain-panel{
+    
+    background:
+      repeating-linear-gradient(90deg, #7A1128 0 18px, #6A0E22 18px 36px),
+      linear-gradient(180deg, #8A1530, #4A0C1A 85%);
+    box-shadow: inset -20px 0 40px rgba(0,0,0,0.5);
+    transition: transform 1.4s cubic-bezier(.77,0,.18,1);
+  }
+  .curtain-left{ left:0; transform-origin:left; border-right:3px solid var(--gold);}
+  .curtain-right{ right:0; transform-origin:right; border-left:3px solid var(--gold);}
+  #curtain-screen.open .curtain-left{ transform: translateX(-100%) scaleX(0.3); }
+  #curtain-screen.open .curtain-right{ transform: translateX(100%) scaleX(0.3); }
+  .curtain-tassel{
+    position:absolute; top:0; left:50%; transform:translateX(-50%);
+    width:70%; max-width:340px; opacity:0.9; z-index:2;
+  }
+  .curtain-center{
+    position:relative; z-index:3; text-align:center; color:var(--gold-light);
+    padding:0 20px;
+  }
+  .curtain-center .eyebrow{ letter-spacing:3px; font-size:12px; color:var(--gold); margin-bottom:10px;}
+  .curtain-center h1{
+    font-family:'Great Vibes', cursive; font-size:56px; font-weight:400; color:#FBEBC9;
+    text-shadow:0 0 18px rgba(214,162,76,0.5);
+  }
+  .tap-hint{
+    margin-top:26px; font-size:14px; letter-spacing:1px; color:var(--gold-light);
+    border:1px solid var(--gold); border-radius:30px; padding:10px 22px;
+    cursor:pointer; background:rgba(214,162,76,0.08); display:inline-block;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:0.7;} 50%{opacity:1;} }
+
+  /* ---------- MAIN PAGE ---------- */
+  #main-content{ display:none; }
+  #main-content.revealed{ display:block; animation: fadeIn 1s ease; }
+  @keyframes fadeIn{ from{opacity:0;} to{opacity:1;} }
+
+  .wrap{max-width:600px; margin:0 auto;}
+
+  .hero{
+    position:relative;
+    background:
+      linear-gradient(180deg, rgba(61,10,23,0.55), rgba(61,10,23,0.75)),
+      linear-gradient(160deg, #7A1128, #3D0A17 70%);
+    padding:70px 24px 60px;
+    text-align:center;
+    color:var(--gold-light);
+  }
+  .hero .frame-border{
+    border:1.5px solid var(--gold);
+    padding:34px 18px;
+    border-radius:4px;
+  }
+  .hero .eyebrow{ font-size:13px; letter-spacing:3px; color:var(--gold); }
+  .hero h1{ font-family:'Great Vibes', cursive; font-size:58px; color:#FBEBC9; margin:16px 0 8px; }
+  .hero .sub{ font-size:17px; color:var(--gold-light); }
+
+  .garland{
+    height:34px;
+    background: repeating-linear-gradient(90deg, transparent 0 6px, var(--gold) 6px 8px);
+    opacity:0.5;
+    margin: 0;
+  }
+  .garland-emoji{
+    text-align:center; font-size:22px; padding:14px 0; background:var(--cream); letter-spacing:10px;
+  }
+
+  section{ padding:50px 28px; text-align:center; }
+  section .eyebrow{ font-size:12px; letter-spacing:3px; color:var(--velvet); }
+  section h2{ font-family:'Great Vibes', cursive; font-size:40px; color:var(--velvet); margin:10px 0 20px; font-weight:400; }
+  section p.body-text{ font-size:17px; line-height:1.8; color:#5A2A34; max-width:440px; margin:0 auto; }
+
+  /* Scratch card */
+  .scratch-wrap{
+    position:relative; max-width:320px; margin:26px auto 0;
+    border:2px solid var(--gold); border-radius:14px; overflow:hidden;
+    box-shadow:0 10px 30px rgba(110,15,36,0.25);
+  }
+  .scratch-reveal{
+    padding:34px 18px; background:linear-gradient(160deg,#fff,#FBF3E7);
+    color:var(--velvet-dark);
+  }
+  .scratch-reveal .tag{ font-size:12px; letter-spacing:2px; color:var(--gold); }
+  .scratch-reveal .date{ font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:600; margin:8px 0 4px; }
+  .scratch-reveal .time{ font-size:15px; color:#7A4A55; }
+  #scratchCanvas{
+    position:absolute; top:0; left:0; width:100%; height:100%; touch-action:none; cursor:pointer;
+  }
+  .scratch-hint{
+    font-size:13px; color:var(--velvet); margin-top:12px; letter-spacing:0.5px;
+  }
+
+  /* Countdown */
+  .countdown-block{
+    background: linear-gradient(160deg, var(--velvet-deep), #2B0710);
+    color:var(--gold-light);
+  }
+  .countdown-block .eyebrow, .countdown-block h2{ color:var(--gold-light); }
+  .countdown-block h2{ color:#FBEBC9; }
+  .countdown{ display:flex; justify-content:center; gap:18px; margin-top:20px; flex-wrap:wrap;}
+  .countdown .box{ min-width:64px; }
+  .countdown .num{ font-size:34px; font-weight:600; display:block; font-family:'Cormorant Garamond',serif;}
+  .countdown .lbl{ font-size:11px; letter-spacing:2px; color:var(--gold); display:block; margin-top:4px;}
+
+  /* Timeline */
+  .timeline{ text-align:left; max-width:420px; margin:26px auto 0; position:relative; padding-left:26px;}
+  .timeline::before{
+    content:''; position:absolute; left:6px; top:6px; bottom:6px; width:1px; background:var(--gold);
+  }
+  .t-item{ position:relative; padding-bottom:30px; }
+  .t-item:last-child{ padding-bottom:0; }
+  .t-item::before{
+    content:''; position:absolute; left:-26px; top:4px; width:11px; height:11px; border-radius:50%;
+    background:var(--velvet); border:2px solid var(--gold);
+  }
+  .t-time{ font-size:13px; color:var(--gold); letter-spacing:1px; }
+  .t-title{ font-size:21px; color:var(--velvet-dark); margin:2px 0 2px; }
+  .t-desc{ font-size:14px; color:#7A4A55; }
+
+  /* Venue */
+  .venue-card{
+    background:var(--velvet-deep); color:var(--gold-light); border-radius:14px;
+    padding:28px 22px; max-width:420px; margin:26px auto 0;
+  }
+  .venue-card .vname{ font-size:22px; color:#FBEBC9; margin-bottom:6px;}
+  .venue-card .vaddr{ font-size:15px; color:var(--gold-light); margin-bottom:16px;}
+  .map-frame{ border-radius:10px; overflow:hidden; border:1px solid var(--gold); margin-bottom:16px;}
+  .map-frame iframe{ width:100%; height:220px; border:0; display:block;}
+  .map-btn{
+    display:inline-block; border:1px solid var(--gold); color:var(--gold-light);
+    text-decoration:none; padding:10px 24px; border-radius:30px; font-size:14px; letter-spacing:1px;
+  }
+
+  /* Dress code */
+  .palette{ display:flex; justify-content:center; gap:12px; margin-top:20px; flex-wrap:wrap;}
+  .swatch{ width:38px; height:38px; border-radius:50%; border:2px solid var(--gold-light); box-shadow:0 2px 6px rgba(0,0,0,0.15);}
+
+  /* RSVP */
+  form{ max-width:380px; margin:24px auto 0; display:flex; flex-direction:column; gap:14px; text-align:left;}
+  label{ font-size:13px; letter-spacing:0.5px; color:var(--velvet); margin-bottom:4px; display:block;}
+  input, select, textarea{
+    width:100%; padding:12px 14px; border-radius:8px;
+    border:1px solid #D8B98A; font-size:15px; font-family:'Cormorant Garamond',serif;
+    background:#FFFDF8;
+  }
+  button{
+    background:var(--velvet); color:var(--gold-light); border:none;
+    padding:14px; border-radius:8px; font-size:16px; letter-spacing:1px; cursor:pointer;
+    font-family:'Cormorant Garamond',serif;
+  }
+  button:hover{ background:var(--velvet-dark); }
+
+  footer{ text-align:center; padding:36px 20px; color:var(--velvet); font-size:15px; background:var(--cream); }
+/* Authentic Card Styles */
+.authentic-card {
+  max-width: 550px;
+  margin: 40px auto;
+  padding: 45px 35px;
+  background: var(--velvet-dark, #3b0a1e);
+  /* Floral-style double gold border */
+  border: 3px double var(--gold, #d4af37);
+  outline: 1px solid var(--gold, #d4af37);
+  outline-offset: -8px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+
+/* Floral motifs at top and bottom */
+.authentic-card::before {
+  content: "❀ ❁ ❀";
+  display: block;
+  color: var(--gold, #d4af37);
+  font-size: 20px;
+  margin-bottom: 15px;
+  letter-spacing: 8px;
+}
+
+.authentic-card::after {
+  content: "❀ ❁ ❀";
+  display: block;
+  color: var(--gold, #d4af37);
+  font-size: 20px;
+  margin-top: 20px;
+  letter-spacing: 8px;
+}
+/* Floral Border Wrapper */
+.floral-border-wrapper {
+  position: relative;
+  max-width: 580px;
+  margin: 40px auto;
+  padding: 35px 25px;
+  border: 3px double var(--gold, #d4af37);
+  outline: 2px solid var(--gold, #d4af37);
+  outline-offset: -10px;
+  border-radius: 18px;
+  background: var(--velvet-dark, #3b0a1e);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+/* Floral Motifs Top & Bottom */
+.floral-border-wrapper::before {
+  content: "❧ ❀ ❁ ❀ ❧";
+  display: block;
+  color: var(--gold, #d4af37);
+  font-size: 22px;
+  letter-spacing: 6px;
+  margin-bottom: 20px;
+}
+
+.floral-border-wrapper::after {
+  content: "❧ ❀ ❁ ❀ ❧";
+  display: block;
+  color: var(--gold, #d4af37);
+  font-size: 22px;
+  letter-spacing: 6px;
+  margin-top: 25px;
+} 
+  .card-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--gold, #d4af37);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .host-section {
+    font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 25px;
+}
+  .host-section strong {
+    color: #fff;
+    font-size: 17px;
+  }
+  .couple-names {
+    font-family: 'Cormorant Garamond', serif;
+  color: var(--gold, #d4af37);
+  font-size: 38px;
+  margin: 15px 0;
+}
+  .bride-groom-details {
+  font-size: 14px;
+  color: #e0e0e0;
+  margin-bottom: 10px;
+}
+  .card-divider {
+  width: 60px;
+  height: 1px;
+  background: var(--gold, #d4af37);
+  margin: 20px auto;
+}
+    .hero .frame-border {
+  border: 2px solid var(--gold);
+  border-radius: 120px 120px 0 0; /* Creates the arched top like the reel */
+  padding: 40px 20px;
+  background: radial-gradient(circle at top, rgba(214,162,76,0.15), transparent 70%);
+}
+  
+.chandelier {
+  width: 80px;
+  height: 100px;
+  margin: 0 auto 10px;
+  background: radial-gradient(circle, var(--gold-light) 0%, transparent 70%);
+  border-radius: 50%;
+  box-shadow: 0 0 25px var(--gold);
+}
+/* Floating Music Toggle Button */
+.music-toggle {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 9999;
+  background: var(--velvet-dark, #3b0a1e);
+  color: var(--gold, #d4af37);
+  border: 2px solid var(--gold, #d4af37);
+  border-radius: 50px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.music-toggle:hover {
+  background: var(--gold, #d4af37);
+  color: var(--velvet-dark, #3b0a1e);
+}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN INTRO -->
+<div id="curtain-screen">
+  <div class="curtain-panel curtain-left"></div>
+  <div class="curtain-panel curtain-right"></div>
+  <div class="curtain-center">
+    <div class="chandelier"></div>
+    <div class="eyebrow">YOU ARE INVITED TO CELEBRATE</div>
+    <h1>Harsha &amp; Mukul</h1>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main-content">
+  <div class="wrap">
+
+    <div class="hero">
+      <div class="frame-border">
+        <div class="eyebrow">A BLESSED BEGINNING</div>
+        <h1>Harsha &amp; Mukul</h1>
+        <div class="sub">With hearts full of gratitude, we warmly invite you<br>to celebrate this beautiful beginning with us.</div>
+      </div>
+    </div>
+    <div class="garland"></div>
+
+    <section>
+      <div class="eyebrow">OUR STORY</div>
+      <h2>Moments, softly held</h2>
+      <p class="body-text">"From Shared Smiles to Forever"
+
+What started as a simple connection slowly turned into our favorite story. Harsha and Mukul’s journey began with endless late-night conversations, shared laughter, and a growing realization that life’s best moments were simply better together. Through every adventure, quiet evening, and joyous milestone, we found a best friend and a partner for life in each other.
+
+Now, as we take the biggest step of our journey, we can’t wait to celebrate the start of our forever surrounded by the people who mean the most to us. We have spent every day building a love grounded in warmth, respect, and boundless joy. With the blessings of our families and the love of our friends, we are excited to begin our next chapter as husband and wife. Join us as we celebrate our love story and create memories that will last a lifetime.</p>
+    </section>
+    <div class="garland"></div>
+
+    <section>
+      <div class="eyebrow">A DATE TO HOLD CLOSE</div>
+      <h2>Scratch to Reveal</h2>
+      <div class="scratch-wrap">
+        <div class="scratch-reveal">
+          <div class="tag">YOU'RE INVITED</div>
+          <div class="date">3rd December, 2026</div>
+          <div class="time">Thrusday · 8:00 PM</div>
+        </div>
+        <canvas id="scratchCanvas"></canvas>
+      </div>
+      <div class="scratch-hint">✦ scratch the card above with your finger ✦</div>
+    </section>
+
+    <section class="authentic-card">
+  <div class="card-heading">॥ श्री गणेशाय नमः ॥</div>
+
+  <div class="hosts-section">
+    <p>With the blessings of Almighty,</p>
+    <p><strong>Late smt. Vidyavati and Late sh. Bhagirath Sharma</strong></p>
+    <p style="margin-top: 10px;">and the guidance of</p>
+    <p><strong>Sharma Family</strong></p>
+    <p>solicit the pleasure of your company on the auspicious occasion of the wedding ceremony of their beloved daughter/son</p>
+  </div>
+
+  <div class="couple-names">Harsha</div>
+  <div class="bride-groom-details">D/o Mrs.Rita &amp; Beloved Brother Mr. Jatin</div>
+
+  <div style="color: var(--gold, #d4af37); font-size: 22px; margin: 10px 0;">&amp;</div>
+
+  <div class="couple-names">Mukul</div>
+  <div class="bride-groom-details">S/o Mrs. Pushpa Sharma &amp; Mr. R.B. Sharma</div>
+
+  <div class="card-divider"></div>
+
+  <p style="font-size: 15px; line-height: 1.6;">
+    Join us to bless the couple as they begin their journey together.
+  </p>
+</section>
+
+    <section class="countdown-block">
+      <div class="eyebrow">UNTIL WE BEGIN FOREVER</div>
+      <h2>Counting every heartbeat</h2>
+      <div class="countdown" id="countdown">
+        <div class="box"><span class="num" id="days">--</span><span class="lbl">DAYS</span></div>
+        <div class="box"><span class="num" id="hours">--</span><span class="lbl">HOURS</span></div>
+        <div class="box"><span class="num" id="mins">--</span><span class="lbl">MINUTES</span></div>
+        <div class="box"><span class="num" id="secs">--</span><span class="lbl">SECONDS</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">THE CELEBRATION</div>
+      <h2>Our Wedding Day</h2>
+      <div class="timeline">
+        <div class="t-item">
+          <div class="t-time">4:00 PM </div>
+          <div class="t-title">Mehfil-e-Mehendi</div>
+          <div class="t-desc">Venue- Celebrating at our lovely home with all the loved ones at 6/1 DOUBLE STOREY, SONIPAT</div>
+       <!-- Google Map Embed for Rajiv Homes -->
+    <div class="map-container">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3489.873!2d77.0262494!3d28.9752324!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390db1488071917f%3A0x6556e2284b4e2ede!2sRajiv%20Homes%20Double%20Storey%20sonipat!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+    <!-- Direct Navigation Link -->
+    <a href="https://maps.google.com/?cid=7302272508517822174" target="_blank" class="map-btn">
+      📍 Navigate to Residence on Google Maps
+    </a>
+  </div>
+        <div class="t-item">
+          <div class="t-time">10:00 AM</div>
+          <div class="t-title">Haldi-e-Khaas</div>
+          <div class="t-desc">Venue- Celebrating at our lovely home with all the loved ones at 6/1 DOUBLE STOREY, SONIPAT</div>
+        <!-- Google Map Embed for Rajiv Homes -->
+    <div class="map-container">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3489.873!2d77.0262494!3d28.9752324!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390db1488071917f%3A0x6556e2284b4e2ede!2sRajiv%20Homes%20Double%20Storey%20sonipat!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+    <!-- Direct Navigation Link -->
+    <a href="https://maps.google.com/?cid=7302272508517822174" target="_blank" class="map-btn">
+      📍 Navigate to Residence on Google Maps
+    </a>
+  </div>
+        <div class="t-item">
+          <div class="t-time">8:00 PM</div>
+          <div class="t-title">Wedding Ceremony</div>
+          <div class="t-desc">Solemnisation &amp; blessings</div>
+        </div>
+       
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">THE UTSAV GRAND BANQUET</div>
+      <h2>Find us here</h2>
+      <div class="venue-card">
+        <div class="vname">THE UTSAV GRAND BANQUET</div>
+        <div class="vaddr">MAHARAJA AGARSEN CHOWK, NEAR MURTHAL RD, JEEVAN VIHAR, SONIPAT, HARYANA 131001</div>
+        <div class="map-frame">
+          <iframe src="https://www.google.com/maps?q=The+Utsav+Grand+banquets+and+resort+Sonipat+Haryana&output=embed" loading="lazy"></iframe>
+        </div>
+        <a class="map-btn" href="https://maps.app.goo.gl/7sxMhTTCKyhVgtzT6" target="_blank" rel="noopener">VIEW ON GOOGLE MAPS</a>
+      </div>
+    </section>
+<section>
+  <div class="eyebrow">GALLERY OF YOUR JOURNEY</div>
+  <h2>Moments softly held</h2>
+  <div style="display:flex; gap:12px; overflow-x:auto; padding:10px 0;">
+    <img src="Photo2.jpeg" style="width:200px; height:260px; object-fit:cover; border-radius:10px; border:1px solid var(--gold);">
+    <img src="Photo1.jpeg" style="width:200px; height:260px; object-fit:cover; border-radius:10px; border:1px solid var(--gold);">
+    <img src="Photo3.jpeg" style="width:200px; height:260px; object-fit:cover; border-radius:10px; border:1px solid var(--gold);">
+  </div>
+</section>
+
+
+    <section>
+      <div class="eyebrow">DRESS CODE</div>
+      <h2>Festive Formal</h2>
+      <p class="body-text">Traditional or formal attire is encouraged — sarees, lehengas, sherwanis, kurtas, and suits are all welcome. We kindly ask guests to avoid overly casual attire and white or ivory.</p>
+      <div class="palette">
+        <div class="swatch" style="background:#3D0A17"></div>
+        <div class="swatch" style="background:#6E0F24"></div>
+        <div class="swatch" style="background:#B3122E"></div>
+        <div class="swatch" style="background:#D6A24C"></div>
+        <div class="swatch" style="background:#FBF3E7"></div>
+      </div>
+    </section>
+
+   
+
+    <footer>With love, the families of Harsha &amp; Mukul 💛</footer>
+  </div>
+</div>
+
+<script>
+  // Curtain intro
+  // Replace lines 219-228 with this:
+window.addEventListener('DOMContentLoaded', function(){
+  var curtain = document.getElementById('curtain-screen');
+  setTimeout(function(){
+    curtain.classList.add('open');
+    setTimeout(function(){
+      curtain.style.display = 'none';
+      document.getElementById('main-content').classList.add('revealed');
+      initScratch();
+    }, 1400);
+  }, 3000); // 3-second delay before curtains open
+});
+
+  // Countdown
+  var weddingDate = new Date("2026-12-03T20:00:00");
+  function updateCountdown(){
+    var now = new Date();
+    var diff = weddingDate - now;
+    if(diff < 0) diff = 0;
+    var d = Math.floor(diff/(1000*60*60*24));
+    var h = Math.floor((diff/(1000*60*60))%24);
+    var m = Math.floor((diff/(1000*60))%60);
+    var s = Math.floor((diff/1000)%60);
+    document.getElementById('days').textContent = d;
+    document.getElementById('hours').textContent = h;
+    document.getElementById('mins').textContent = m;
+    document.getElementById('secs').textContent = s;
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // Scratch-to-reveal
+  function initScratch(){
+    var canvas = document.getElementById('scratchCanvas');
+    var wrap = canvas.parentElement;
+    var ctx = canvas.getContext('2d');
+
+    function sizeCanvas(){
+      var rect = wrap.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      var grad = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+      grad.addColorStop(0, '#6E0F24');
+      grad.addColorStop(1, '#3D0A17');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0,0,canvas.width, canvas.height);
+      ctx.fillStyle = '#F0D9A8';
+      ctx.font = '600 16px Cormorant Garamond, serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('✦ SCRATCH HERE ✦', canvas.width/2, canvas.height/2);
+    }
+    sizeCanvas();
+    window.addEventListener('resize', sizeCanvas);
+
+    var isDown = false;
+
+    function scratchAt(x, y){
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, 28, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    function getPos(e){
+      var rect = canvas.getBoundingClientRect();
+      if(e.touches && e.touches[0]){
+        return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
+      }
+      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    }
+
+    function checkCleared(){
+      var imgData = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+      var transparent = 0;
+      for(var i=3; i<imgData.length; i+=4*40){
+        if(imgData[i] === 0) transparent++;
+      }
+      var total = imgData.length/(4*40);
+      if(transparent/total > 0.55){
+        canvas.style.transition = 'opacity 0.6s ease';
+        canvas.style.opacity = '0';
+        setTimeout(function(){ canvas.style.display='none'; }, 600);
+      }
+    }
+
+    canvas.addEventListener('pointerdown', function(e){ isDown = true; var p = getPos(e); scratchAt(p.x,p.y); });
+    canvas.addEventListener('pointermove', function(e){ if(!isDown) return; var p = getPos(e); scratchAt(p.x,p.y); checkCleared(); });
+    window.addEventListener('pointerup', function(){ isDown = false; checkCleared(); });
+    canvas.addEventListener('touchstart', function(e){ isDown = true; var p = getPos(e); scratchAt(p.x,p.y); e.preventDefault(); }, {passive:false});
+    canvas.addEventListener('touchmove', function(e){ if(!isDown) return; var p = getPos(e); scratchAt(p.x,p.y); checkCleared(); e.preventDefault(); }, {passive:false});
+    canvas.addEventListener('touchend', function(){ isDown = false; checkCleared(); });
+  }
+  </script>
+  <!-- Background Audio Element -->
+<audio id="bgMusic" loop>
+  <source src="Audio.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Floating Toggle Button -->
+<button class="music-toggle" onclick="toggleMusic()">
+  🎵 <span id="musicText">Play Music</span>
+</button>
+
+
+<script>
+  var bgMusic = document.getElementById('bgMusic');
+  var musicText = document.getElementById('musicText');
+
+  function toggleMusic() {
+    if (bgMusic.paused) {
+      bgMusic.play();
+      musicText.textContent = 'Pause Music';
+    } else {
+      bgMusic.pause();
+      musicText.textContent = 'Play Music';
+    }
+  }
+</script>
+</body>
+</html>
+    
