@@ -362,9 +362,9 @@
       <h2>Moments, softly held</h2>
       <p class="body-text">"From Shared Smiles to Forever"
 
-What started as a simple connection slowly turned into our favorite story. Harsha and Mukul’s journey began with endless late-night conversations, shared laughter, and a growing realization that life’s best moments were simply better together. Through every adventure, quiet evening, and joyous milestone, we found a best friend and a partner for life in each other.
+What started as a simple connection slowly turned into our favorite story. Mukul and Harsha’s journey began with endless late-night conversations, shared laughter, and a growing realization that life’s best moments were simply better together. Through every adventure, quiet evening, and joyous milestone, they found a best friend and a partner for life in each other.
 
-Now, as we take the biggest step of our journey, we can’t wait to celebrate the start of our forever surrounded by the people who mean the most to us. We have spent every day building a love grounded in warmth, respect, and boundless joy. With the blessings of our families and the love of our friends, we are excited to begin our next chapter as husband and wife. Join us as we celebrate our love story and create memories that will last a lifetime.</p>
+Now, as they are taking the biggest step of their journey, we can’t wait to celebrate the start of their forever surrounded by the people who mean the most to them. They have spent every day building a love grounded in warmth, respect, and boundless joy. With the blessings of both the families and the love of their friends, they are excited to begin their next chapter as husband and wife. Join us as we celebrate their love story and create memories that will last a lifetime.</p>
     </section>
     <div class="garland"></div>
 
@@ -390,7 +390,7 @@ Now, as we take the biggest step of our journey, we can’t wait to celebrate th
     <p><strong>Late smt. Vidyavati and Late sh. Bhagirath Sharma</strong></p>
     <p style="margin-top: 10px;">and the guidance of</p>
     <p><strong>Sharma Family</strong></p>
-    <p>solicit the pleasure of your company on the auspicious occasion of the wedding ceremony of their beloved daughter/son</p>
+    <p>solicit the pleasure of your company on the auspicious occasion of the wedding ceremony of their beloved Daughter</p>
   </div>
 
   <div class="couple-names">Harsha</div>
@@ -636,6 +636,97 @@ window.addEventListener('DOMContentLoaded', function(){
     }
   }
 </script>
+  !-- All your existing HTML layout, audio element, and buttons go above here -->
+
+  <!-- PASTE THE SCRIPT SNIPPET HERE (Before </body>) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    let popperTriggered = false;
+
+    // Party Popper Burst Function
+    function triggerPartyPopper() {
+      if (popperTriggered) return;
+      popperTriggered = true;
+
+      // Left Popper
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { x: 0.1, y: 0.7 },
+        colors: ['#d4af37', '#f7e7a9', '#e6005c', '#ffffff', '#ffb703']
+      });
+
+      // Right Popper
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { x: 0.9, y: 0.7 },
+        colors: ['#d4af37', '#f7e7a9', '#e6005c', '#ffffff', '#ffb703']
+      });
+
+      // Center Explosion
+      setTimeout(() => {
+        confetti({
+          particleCount: 120,
+          spread: 100,
+          origin: { x: 0.5, y: 0.5 },
+          colors: ['#d4af37', '#f7e7a9', '#e6005c', '#ffffff', '#ffb703'],
+          scalar: 1.2
+        });
+      }, 250);
+    }
+
+    // Scratch Card Initialization
+    function initScratch() {
+      const canvas = document.getElementById('scratchCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      // Set canvas dimensions to match container
+      canvas.width = canvas.parentElement.offsetWidth || 300;
+      canvas.height = canvas.parentElement.offsetHeight || 120;
+
+      // Fill canvas with gold scratch foil
+      ctx.fillStyle = '#d4af37';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Add text on the scratch foil
+      ctx.fillStyle = '#3b0a1e';
+      ctx.font = 'bold 16px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Scratch Here to Reveal Date', canvas.width / 2, canvas.height / 2 + 5);
+
+      let isScratching = false;
+
+      function scratch(e) {
+        if (!isScratching) return;
+        
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+        const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Trigger Party Popper on scratch
+        triggerPartyPopper();
+      }
+
+      // Event Listeners for Mouse and Touch
+      canvas.addEventListener('mousedown', (e) => { isScratching = true; scratch(e); });
+      canvas.addEventListener('mousemove', scratch);
+      canvas.addEventListener('mouseup', () => { isScratching = false; });
+
+      canvas.addEventListener('touchstart', (e) => { isScratching = true; scratch(e); });
+      canvas.addEventListener('touchmove', scratch);
+      canvas.addEventListener('touchend', () => { isScratching = false; });
+    }
+
+    window.addEventListener('DOMContentLoaded', initScratch);
+  </script>
 </body>
 </html>
     
